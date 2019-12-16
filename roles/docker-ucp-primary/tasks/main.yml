@@ -1,0 +1,19 @@
+---
+- name: Check if UCP controller already up and running
+  uri:
+    url: "https://localhost/_ping"
+    validate_certs: no
+  register: ucp_primary
+  ignore_errors: yes
+
+- include: ucp-primary.yml 
+  when: ucp_primary.status != 200
+
+- name: Get Manager token
+  shell: docker swarm join-token -q manager
+  register: master_token
+
+- name: Get Worker token
+  shell: docker swarm join-token -q worker
+  register: worker_token
+

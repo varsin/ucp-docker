@@ -1,0 +1,23 @@
+- name: Initiate docker-ee pre-requisites
+  command: echo "https://storebits.docker.com/ee/rhel/sub-4befba2b-5143-4037-b3c3-7b1137b8b16a" > /etc/yum/vars/dockerurl; echo "7" > /etc/yum/vars/dockerosversion
+- name: Install yum utils
+  yum:
+    name: yum-utils
+    state: latest
+
+- name: Add Docker repo
+  command: yum-config-manager --add-repo https://storebits.docker.com/ee/rhel/sub-4befba2b-5143-4037-b3c3-7b1137b8b16a/docker-ee.repo
+
+- name: Enable Docker Edge repo
+  command: yum-config-manager --enable rhel-7-server-extras-rpms
+    
+- name: Install Docker
+  package:
+    name: docker-ee
+    state: latest
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes

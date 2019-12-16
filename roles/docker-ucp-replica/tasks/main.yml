@@ -1,0 +1,15 @@
+---
+
+- name: Pinging leader ucp-primary and perform health check
+  uri:
+    url: "https://{{ hostvars[groups['ucp-primary-leader'][0]]['ansible_eth0']['ipv4']['address'] }}/_ping"
+    status_code: 200
+    validate_certs: no
+  register: ucp_primary
+  until: ('status' in ucp_primary) and (ucp_primary.status == 200)
+  retries: 50
+  delay: 2
+
+- name: Joining Manager replicas to UCP Cluster
+  command: docker swarm join --token {{ hostvars[groups['ucp-primary-leader'][0]]['master_token'].stdout }} {{ hostvars[groups['ucp-primary-leader'][0]]['ansible_eth0']['ipv4']['address'] }}
+

@@ -1,0 +1,21 @@
+# This is an example ansible 'hosts' file.
+
+[all:vars]
+
+#storage_driver=overlay # to change from default graph storage driver
+ucp_admin_password=<ucp_admin_password>
+ucp_version=3.0.1
+host_address=<host_address>
+
+[ucp-primary-leader]
+<primary-leader>
+
+[ucp-replica-managers]
+<replica-1>
+<replica-2>
+
+[ucp-worker]
+<worker-1>
+<worker-2>
+[test]
+<primary-leader>

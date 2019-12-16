@@ -1,0 +1,9 @@
+---
+
+- name: Adding lincense file
+  copy: src="docker_subscription.lic" dest=/tmp
+ 
+- name: Installing Primary UCP Controller
+  command: docker container run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/docker_subscription.lic:/docker_subscription.lic -e UCP_ADMIN_PASSWORD={{ ucp_admin_password }} docker/ucp:3.0.1 install --host-address 10.7.40.19 --force-minimums
+        
+  #command: docker container run --rm --name ucp -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/docker_subscription.lic:/docker_subscription.lic -e UCP_ADMIN_PASSWORD={{ ucp_admin_password }} ucp docker/ucp:{{  ucp_version }} install --host-address {{ host_address }}
